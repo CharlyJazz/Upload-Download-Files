@@ -1,0 +1,42 @@
+html {
+    font-size: 16px;
+}
+
+.Drop-input {
+    width: 100%;
+    height: 60px;
+    background-color: #ddd;
+    border: 4px dotted #888;
+    text-align: center;
+    padding-top: 40px;
+}
+
+.Div-files .File:first-child {
+    padding-top: 1em;
+    border-top: 2px solid #37989291;
+}
+
+.File {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+    border-bottom: 2px solid #37989291;
+}
+
+.File-type {
+    margin-left: 2em;
+}
+
+.Div-Button {
+    text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.Div-Button button {
+    padding: 1em;
+    background: #87bcde;
+    border: none;
+    box-shadow: 0px 1px 15px 1px #0000004f;
+    cursor: pointer;
+}

@@ -1,0 +1,8 @@
+/node_modules/
+static/javascript/bin/bundle.js
+/env/
+/.idea/
+
+package-lock.json
+
+*pyc
