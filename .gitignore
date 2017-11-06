@@ -1,5 +1,5 @@
 /node_modules/
-static/javascript/bin/bundle.js
+app/static/javascript/bin/bundle.js
 /env/
 /.idea/
 app/static/files/
