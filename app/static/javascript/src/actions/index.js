@@ -1,9 +1,8 @@
 import io from '../helpers/io'
 
 
-function readFileChunk (ctx, offset) {
-    let length = 0;
-    let end_offset = ctx.props.file.size + length; // TODO: What is length?
+function readFileChunk (ctx, offset, length) {
+    let end_offset = offset + length;
     if (end_offset > ctx.props.file.size)
         end_offset = ctx.props.file.size;
     let r = new FileReader();
@@ -12,23 +11,27 @@ function readFileChunk (ctx, offset) {
             onReadError(ctx, 'Error in readFileChunk');
         }
         else {
-            onReadSuccess(ctx, end_offset, event.target.result);
+            onReadSuccess(ctx, end_offset, length, event.target.result);
         }
     }.bind(r, ctx.props.file, offset, length);
     r.readAsArrayBuffer(ctx.props.file.slice(offset, end_offset));
 }
 
-const onReadSuccess = (ctx, offset, data) => {
+const onReadSuccess = (ctx, offset, length, data) => {
     // Read success callback
     if (ctx.state.done) return;
 
     io.emit('write-chunk', ctx.state.server_filename, offset, data, function(offset, ack) {
-        if (!ack) onReadError(ctx, 'Transfer aborted by server')
+        if (!ack) {
+            onReadError(ctx, 'Transfer aborted by server');
+        }
     }.bind(this, offset));
 
     let end_offset = offset + length,
         color = '#48bd9666',
-        width = parseInt(300 * end_offset / ctx.props.file.size);
+        width = ((end_offset / ctx.props.file.size) * 100) < 100
+            ? (end_offset / ctx.props.file.size) * 100
+            : 100;
 
     ctx.setState({
         progress: {
@@ -39,21 +42,20 @@ const onReadSuccess = (ctx, offset, data) => {
     });
 
     if (end_offset < ctx.props.file.size) {
-        readFileChunk(ctx, ctx.props.chunk_size);
+        readFileChunk(ctx, end_offset, ctx.props.chunk_size);
     }
     else {
-        ctx.state.done = true;
+        ctx.setState({done: true});
     }
 };
 
 function onReadError(ctx, message) {
     // Read error callback
-    console.log(message);
-
     ctx.setState({
         progress: {
             ...ctx.state.progress,
-            color: '#ff000073'
+            color: '#ff000073',
+            percent: 100
         }
     });
 

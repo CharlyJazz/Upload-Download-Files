@@ -17,13 +17,13 @@ export default class File extends Component {
             }
         };
 
-        this.uploadFile = () => readFileChunk(this, 0);
-		this.onReadError = () => onReadError(this, 'Upload rejected by server');
+        this.uploadFile = () => readFileChunk(this, 0, props.chunk_size);
+        this.onReadError = () => onReadError(this, 'Upload rejected by server');
     }
 
     componentWillReceiveProps(nextProps) {
-    	const that = this;
-        if (nextProps.uploading) {
+        const that = this;
+        if (nextProps.uploading && !this.state.done) {
             io.emit('start-transfer', this.props.file.name, this.props.file.size, function(filename) {
                 if (!filename) {
                     // The server rejected the transfer
@@ -40,17 +40,20 @@ export default class File extends Component {
 
     render() {
         return (
-			<div className="File">
-				<span className="File-name">Name: {this.props.file.name}</span>
-				<span className="File-type">Type: {this.props.file.type}</span>
+            <div className="File">
+                <span className="File-name">Name: {this.props.file.name}</span>
+                <span className="File-type">Type: {this.props.file.type || 'unknown'}</span>
+                <span className="File-type">Size: {this.props.file.size}</span>
+
                 { this.props.uploading &&
-				<Line percent={this.state.progress.percent}
-					  strokeColor={this.state.progress.color}
-					  strokeWidth="1"
-					  strokeLinecap='square'
-					  trailColor="#2fb9e224"/>
+                <Line percent={this.state.progress.percent}
+                      strokeColor={this.state.progress.color}
+                      strokeWidth="1"
+                      strokeLinecap='square'
+                      trailColor="#2fb9e224"/>
                 }
-			</div>
+                { this.state.done && "Done"}
+            </div>
         )
     }
 }
