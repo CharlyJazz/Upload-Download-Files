@@ -1,6 +1,5 @@
-from flask import render_template
-from . import app
+from app import create_app, socketio
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+app = create_app()
+
+socketio.run(app, debug=True, port=8000)

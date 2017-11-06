@@ -2,7 +2,11 @@
 static/javascript/bin/bundle.js
 /env/
 /.idea/
+app/static/files/
 
 package-lock.json
 
 *pyc
+
+!app/static/files/.gitkeep
+

@@ -1,11 +1,11 @@
 var path = require('path');
 
-const ENTRY_DIR = path.resolve(__dirname, 'static/javascript/src');
+const ENTRY_DIR = path.resolve(__dirname, 'app/static/javascript/src');
 
 var config = {
     entry: ENTRY_DIR  + '/index.js',
     output: {
-        path: path.resolve(__dirname, 'static/javascript/bin'),
+        path: path.resolve(__dirname, 'app/static/javascript/bin'),
         filename: 'bundle.js'
     },
     module : {

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import File from './File';
-import { readFileChunk, onReadSuccess, onReadError } from '../actions'
-
 
 export default class DropFileInput extends Component {
 	constructor(props) {
@@ -9,7 +7,8 @@ export default class DropFileInput extends Component {
 		
 		this.state = {
 			chunk_size: 64 * 1024,
-			files: []
+			files: [],
+			uploading: false
 		}
 	}
 	
@@ -25,11 +24,17 @@ export default class DropFileInput extends Component {
 			}, () => {console.log(this.state)} )
 		}
 	};
+
+	toggleUpload = () => {
+		this.setState({
+			uploading: !this.state.uploading
+		})
+	};
 	
 	render() {
 		
 		let files = this.state.files.map((file, index) => {
-			return <File file={file} key={index}/>
+			return <File file={file} key={index} chunk_size={this.state.chunk_size} uploading={this.state.uploading}/>
 		});
 		
 		return (
@@ -43,8 +48,8 @@ export default class DropFileInput extends Component {
 					{files}
 				</div>
 				<div className="Div-Button">
-					<button>
-						Upload File{this.state.files.length > 1 && "s"}
+					<button onClick={this.toggleUpload}>
+						{!this.state.uploading ? 'Upload File' : 'Uploading'}
 					</button>
 				</div>
 			</div>

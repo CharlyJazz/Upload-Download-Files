@@ -12,16 +12,17 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-airbnb": "^2.4.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.28.7",
     "style-loader": "^0.19.0",
     "webpack": "^3.8.1"
   },
   "dependencies": {
-    "babel-preset-airbnb": "^2.4.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-1": "^6.24.1",
     "rc-progress": "^2.2.2",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "socket.io-client": "^2.0.2"
   }
 }
