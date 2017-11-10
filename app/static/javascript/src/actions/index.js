@@ -11,7 +11,7 @@ function readFileChunk (ctx, offset, length) {
             onReadError(ctx, 'Error in readFileChunk');
         }
         else {
-            onReadSuccess(ctx, end_offset, length, event.target.result);
+            onReadSuccess(ctx, offset, length, event.target.result);
         }
     }.bind(r, ctx.props.file, offset, length);
     r.readAsArrayBuffer(ctx.props.file.slice(offset, end_offset));
