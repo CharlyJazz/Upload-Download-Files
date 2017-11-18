@@ -20,21 +20,25 @@ export default class DropFileInput extends Component {
 		event.preventDefault();
 		for(let i = 0; i < event.dataTransfer.files.length; i++) {
 			this.setState({
-                files: [...this.state.files, ...[event.dataTransfer.files[i]]]
-            })
+				files: [...this.state.files, ...[event.dataTransfer.files[i]]]
+			});
 		}
+		
+		this.setState({uploading: false})
 	};
-
+	
 	toggleUpload = () => {
 		this.setState({uploading: !this.state.uploading})
 	};
 	
+	
 	render() {
 		let files = this.state.files.map((file, index) => {
 			return <File file={file}
-						 key={index}
-						 chunk_size={this.state.chunk_size}
-						 uploading={this.state.uploading}/>
+			             key={index}
+			             chunk_size={this.state.chunk_size}
+			             uploading={this.state.uploading}
+			/>
 		});
 		
 		return (
@@ -46,7 +50,7 @@ export default class DropFileInput extends Component {
 					{files}
 				</div>
 				<div className="Div-Button">
-					<button onClick={this.toggleUpload}>
+					<button onClick={this.toggleUpload} disabled={!files.length && true}>
 						{!this.state.uploading ? 'Upload File' : 'Cancel'}
 					</button>
 				</div>
