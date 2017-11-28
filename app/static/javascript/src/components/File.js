@@ -11,6 +11,7 @@ export default class File extends Component {
 		this.state = {
 			uploading: props.uploading,
 			done: false,
+			invalid: false,
 			server_filename: '',
 			progress: {
 				percent: 0
@@ -23,11 +24,10 @@ export default class File extends Component {
 	
 	componentWillReceiveProps(nextProps) {
 		const that = this;
-		if (nextProps.uploading && !this.state.done) {
+		if (nextProps.uploading && !this.state.done && !this.state.invalid) {
 			io.emit('start-transfer', this.props.file.name, this.props.file.size, function(filename) {
 				if (!filename) {
-					// The server rejected the transfer
-					that.onReadError();
+					that.onReadError(); // The server rejected the transfer
 				}
 				else {
 					that.setState({server_filename: filename}, () => {
@@ -44,15 +44,15 @@ export default class File extends Component {
           <span className="File-name">Name: {this.props.file.name}</span>
           <span className="File-type">Type: {this.props.file.type || 'unknown'}</span>
           <span className="File-type">Size: {this.props.file.size}</span>
-				
 				{ this.props.uploading &&
-        <Line percent={this.state.progress.percent}
-              strokeColor={this.state.progress.color}
-              strokeWidth="1"
-              strokeLinecap='square'
-              trailColor="#2fb9e224"/>
+	        <Line percent={this.state.progress.percent}
+	              strokeColor={this.state.progress.color}
+	              strokeWidth="1"
+	              strokeLinecap='square'
+                trailColor="#2fb9e224"/>
 				}
-				{ this.state.done && "Done"}
+				{ this.state.done && "Done" }
+	      { this.state.invalid && "Invalid" }
       </div>
 		)
 	}

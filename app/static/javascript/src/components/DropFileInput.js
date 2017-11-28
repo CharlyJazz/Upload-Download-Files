@@ -18,13 +18,16 @@ export default class DropFileInput extends Component {
 	
 	handlerOnDrop = event => {
 		event.preventDefault();
-		for(let i = 0; i < event.dataTransfer.files.length; i++) {
-			this.setState({
-				files: [...this.state.files, ...[event.dataTransfer.files[i]]]
-			});
+		
+		let array_files = [];
+		
+		for (let i = 0; i < event.dataTransfer.files.length; i++) {
+			array_files.push(event.dataTransfer.files[i]);
 		}
 		
-		this.setState({uploading: false})
+		this.setState({files: [...this.state.files, ...array_files]});
+		
+		this.setState({uploading: false});
 	};
 	
 	toggleUpload = () => {

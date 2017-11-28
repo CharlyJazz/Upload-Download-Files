@@ -59,7 +59,7 @@ function onReadError(ctx, message) {
 		}
 	});
 	
-	ctx.setState({done: true});
+	ctx.setState({invalid: true});
 }
 
 

@@ -20,7 +20,6 @@
     "webpack": "^3.8.1"
   },
   "dependencies": {
-    "backbone-collection": "^1.0.10",
     "rc-progress": "^2.2.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
