@@ -34,6 +34,17 @@ export default class DropFileInput extends Component {
 		this.setState({uploading: !this.state.uploading})
 	};
 	
+	removeFile = (index) => {
+		this.setState( (prevState) => {
+			const files = [...prevState.files];
+			
+			files.splice(index, 1);
+			
+			return {
+				files: files
+			}
+		});
+	};
 	
 	render() {
 		let files = this.state.files.map((file, index) => {
@@ -41,6 +52,7 @@ export default class DropFileInput extends Component {
 			             key={index}
 			             chunk_size={this.state.chunk_size}
 			             uploading={this.state.uploading}
+			             clickRemove={this.removeFile.bind(this, index)}
 			/>
 		});
 		

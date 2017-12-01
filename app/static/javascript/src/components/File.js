@@ -41,15 +41,19 @@ export default class File extends Component {
 	render() {
 		return (
       <div className="File">
-          <span className="File-name">Name: {this.props.file.name}</span>
-          <span className="File-type">Type: {this.props.file.type || 'unknown'}</span>
-          <span className="File-type">Size: {this.props.file.size}</span>
+        <span className="File-name">Name: {this.props.file.name}</span>
+        <span className="File-type">Type: {this.props.file.type || 'unknown'}</span>
+        <span className="File-type">Size: {this.props.file.size}</span>
+        
+	      { !this.state.done &&
+	      (<button className="File-button-remove" onClick={this.props.clickRemove}>Remove File</button>)
+	      }
 				{ this.props.uploading &&
-	        <Line percent={this.state.progress.percent}
-	              strokeColor={this.state.progress.color}
-	              strokeWidth="1"
-	              strokeLinecap='square'
-                trailColor="#2fb9e224"/>
+        <Line percent={this.state.progress.percent}
+              strokeColor={this.state.progress.color}
+              strokeWidth="1"
+              strokeLinecap='square'
+              trailColor="#2fb9e224"/>
 				}
 				{ this.state.done && "Done" }
 	      { this.state.invalid && "Invalid" }
