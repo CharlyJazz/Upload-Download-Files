@@ -1,6 +1,4 @@
 # File Input make in React with SocketIO and Flask
-----------------------
-
 
 ### Run:
 
