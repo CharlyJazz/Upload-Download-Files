@@ -56,12 +56,11 @@ function onReadError(ctx, message) {
 			...ctx.state.progress,
 			color: '#ff000073',
 			percent: 100
-		}
-	});
-	
-	ctx.setState({invalid: true});
-}
+		},
 
+		invalid: true
+	});
+}
 
 module.exports = {
 	readFileChunk,

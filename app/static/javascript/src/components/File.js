@@ -1,15 +1,13 @@
-import React, { Component } from 'react'
-import { Line } from 'rc-progress'
-import { readFileChunk, onReadSuccess, onReadError } from '../actions'
-import io from '../helpers/io'
+import React, { PureComponent } from 'react';
+import { Line } from 'rc-progress';
+import { readFileChunk, onReadSuccess, onReadError } from '../actions';
+import io from '../helpers/io';
 
-
-export default class File extends Component {
+export default class File extends PureComponent {
 	constructor(props) {
 		super(props);
 		
 		this.state = {
-			uploading: props.uploading,
 			done: false,
 			invalid: false,
 			server_filename: '',
@@ -23,18 +21,17 @@ export default class File extends Component {
 	}
 	
 	componentWillReceiveProps(nextProps) {
-		const that = this;
 		if (nextProps.uploading && !this.state.done && !this.state.invalid) {
-			io.emit('start-transfer', this.props.file.name, this.props.file.size, function(filename) {
+			io.emit('start-transfer', this.props.file.name, this.props.file.size, ((filename) => {
 				if (!filename) {
-					that.onReadError(); // The server rejected the transfer
+					this.onReadError(); // The server rejected the transfer
 				}
 				else {
-					that.setState({server_filename: filename}, () => {
-						that.uploadFile();
+					this.setState({server_filename: filename}, () => {
+						this.uploadFile();
 					});
 				}
-			}.bind(this.props.file));
+			}).bind(this.props.file));
 		}
 	}
 	
@@ -44,7 +41,6 @@ export default class File extends Component {
         <span className="File-name">Name: {this.props.file.name}</span>
         <span className="File-type">Type: {this.props.file.type || 'unknown'}</span>
         <span className="File-type">Size: {this.props.file.size}</span>
-        
 	      { !this.state.done &&
 	      (<button className="File-button-remove" onClick={this.props.clickRemove}>Remove File</button>)
 	      }

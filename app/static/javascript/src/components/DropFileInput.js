@@ -25,9 +25,10 @@ export default class DropFileInput extends Component {
 			array_files.push(event.dataTransfer.files[i]);
 		}
 		
-		this.setState({files: [...this.state.files, ...array_files]});
-		
-		this.setState({uploading: false});
+		this.setState({
+			files: [...this.state.files, ...array_files],
+			uploading: false
+		});
 	};
 	
 	toggleUpload = () => {
@@ -36,13 +37,11 @@ export default class DropFileInput extends Component {
 	
 	removeFile = (index) => {
 		this.setState( (prevState) => {
-			const files = [...prevState.files];
-			
-			files.splice(index, 1);
-			
-			return {
-				files: files
-			}
+			const newFiles = [
+				...prevState.files.slice(0, index),
+				...prevState.files.slice(index + 1)
+			]
+			return {files: newFiles}
 		});
 	};
 	

@@ -2,7 +2,6 @@ var io = require('socket.io-client')('http://' + document.domain + ':' + locatio
 
 io.on('connect', function() {
 	io.emit('connected');
-	console.log('connected')
 });
 
 export default io;
