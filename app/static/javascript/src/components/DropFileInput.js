@@ -17,12 +17,19 @@ export default class DropFileInput extends Component {
 	};
 	
 	handlerOnDrop = event => {
+		/*
+		* Prevent and repeat files to state
+		* Add Files to State
+		*/
 		event.preventDefault();
 		
-		let array_files = [];
+		const array_files = [];
 		
 		for (let i = 0; i < event.dataTransfer.files.length; i++) {
-			array_files.push(event.dataTransfer.files[i]);
+			let file = event.dataTransfer.files[i];
+				if (!this.state.files.map((n) => n.name).includes(file.name)) {
+					array_files.push(file);
+				}
 		}
 		
 		this.setState({
@@ -36,19 +43,15 @@ export default class DropFileInput extends Component {
 	};
 	
 	removeFile = (index) => {
-		this.setState( (prevState) => {
-			const newFiles = [
-				...prevState.files.slice(0, index),
-				...prevState.files.slice(index + 1)
-			]
-			return {files: newFiles}
+		this.setState({
+			files: this.state.files.filter((_, i) => i !== index)
 		});
 	};
 	
 	render() {
 		let files = this.state.files.map((file, index) => {
 			return <File file={file}
-			             key={index}
+									 key={file.name}
 			             chunk_size={this.state.chunk_size}
 			             uploading={this.state.uploading}
 			             clickRemove={this.removeFile.bind(this, index)}
