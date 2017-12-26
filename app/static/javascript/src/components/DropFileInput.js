@@ -18,7 +18,7 @@ export default class DropFileInput extends Component {
 	
 	handlerOnDrop = event => {
 		/*
-		* Prevent and repeat files to state
+		* Prevent add repeat files to state
 		* Add Files to State
 		*/
 		event.preventDefault();
