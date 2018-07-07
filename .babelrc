@@ -2,10 +2,6 @@
   "presets": [
     "env",
     "react",
-    "stage-1"
-  ],
-  "plugins": [
-    "transform-class-properties",
-    "transform-decorators"
+    "stage-0"
   ]
 }
