@@ -9,12 +9,12 @@ socketio = SocketIO()
 
 @socketio.on('connected')
 def connected():
-    print "%s connected" % (request.sid)
+    print("%s connected" % (request.sid))
 
 
 @socketio.on('disconnect')
 def disconnect():
-    print "%s disconnected" % (request.sid)
+    print("%s disconnected" % (request.sid))
 
 
 @socketio.on('start-transfer')

@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+click = "*"
+itsdangerous = "*"
+python-engineio = "*"
+python-socketio = "*"
+six = "*"
+gevent-websocket = "*"
+gevent = "*"
+greenlet = "*"
+flask = "*"
+markupsafe = "*"
+werkzeug = "*"
+"jinja2" = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
