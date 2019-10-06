@@ -1,7 +1,6 @@
 import io from '../helpers/io'
 
-
-function readFileChunk (ctx, offset, length) {
+export const readFileChunk = (ctx, offset, length) => {
 	let end_offset = offset + length;
 	if (end_offset > ctx.props.file.size)
 		end_offset = ctx.props.file.size;
@@ -17,7 +16,7 @@ function readFileChunk (ctx, offset, length) {
 	r.readAsArrayBuffer(ctx.props.file.slice(offset, end_offset));
 }
 
-const onReadSuccess = (ctx, offset, length, data) => {
+export const onReadSuccess = (ctx, offset, length, data) => {
 	// Read success callback
 	if (ctx.state.done) return;
 	
@@ -49,7 +48,7 @@ const onReadSuccess = (ctx, offset, length, data) => {
 	}
 };
 
-function onReadError(ctx, message) {
+export const onReadError = (ctx, message) => {
 	// Read error callback
 	ctx.setState({
 		progress: {
@@ -61,9 +60,3 @@ function onReadError(ctx, message) {
 		invalid: true
 	});
 }
-
-module.exports = {
-	readFileChunk,
-	onReadSuccess,
-	onReadError
-};
