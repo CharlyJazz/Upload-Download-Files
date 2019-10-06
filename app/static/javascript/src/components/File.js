@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Line } from 'rc-progress';
-import { readFileChunk, onReadSuccess, onReadError } from '../actions';
+import { readFileChunk, onReadError } from '../actions/index.js';
 import io from '../helpers/io';
 
 export default class File extends PureComponent {
@@ -20,7 +20,7 @@ export default class File extends PureComponent {
 		this.onReadError = () => onReadError(this, 'Upload rejected by server');
 	}
 	
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.uploading && !this.state.done && !this.state.invalid) {
 			io.emit('start-transfer', this.props.file.name, this.props.file.size, ((filename) => {
 				if (!filename) {
