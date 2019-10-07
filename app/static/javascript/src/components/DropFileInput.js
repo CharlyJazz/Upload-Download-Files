@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import File from './File';
 
-export default class DropFileInput extends Component {
-	constructor(props) {
-		super(props);
-		
-		this.state = {
-			chunk_size: 64 * 1024,
-			files: [],
-			uploading: false
-		}
-	}
+const  DropFileInput = props => {
+
+	const chunk_Size =  64 * 1024;
+			
+	const [filesInput, setFiles] = useState([]);
+	const [uploadingState, setUploading] = useState(false);
 	
 	handlerOnDragOver = event => {
 		event.preventDefault();
@@ -25,53 +21,55 @@ export default class DropFileInput extends Component {
 		
 		const array_files = [];
 		
-		for (let i = 0; i < event.dataTransfer.files.length; i++) {
-			let file = event.dataTransfer.files[i];
-				if (!this.state.files.map((n) => n.name).includes(file.name)) {
+		for (let i = 0; i < event.dataTransfer.filesInput.length; i++) {
+			let file = event.dataTransfer.filesInput[i];
+				if (!filesInput.map((n) => n.name).includes(file.name)) {
 					array_files.push(file);
 				}
 		}
 		
-		this.setState({
-			files: [...this.state.files, ...array_files],
-			uploading: false
-		});
+		setFiles(array_files);
+		setUploading(false);
 	};
 	
 	toggleUpload = () => {
-		this.setState({uploading: !this.state.uploading})
+		setUploading(!uploadingState)
+		// this.setState({uploading: !this.state.uploading})
 	};
 	
 	removeFile = (index) => {
-		this.setState({
-			files: this.state.files.filter((_, i) => i !== index)
-		});
+		let files = filesInput.filter((_, i) => i !== index);
+		setFiles(files);
+		
+		// this.setState({
+		// 	files: this.state.files.filter((_, i) => i !== index)
+		// });
 	};
 	
-	render() {
-		let files = this.state.files.map((file, index) => {
+		let files = filesInput.map((file, index) => {
 			return <File file={file}
 									 key={file.name}
-			             chunk_size={this.state.chunk_size}
-			             uploading={this.state.uploading}
-			             clickRemove={this.removeFile.bind(this, index)}
+			             chunk_size={chunk_Size}
+			             uploading={uploadingState}
+			             clickRemove={removeFile.bind(this, index)}
 			/>
 		});
 		
 		return (
 			<div>
-				<div className="Drop-input" onDragOver={this.handlerOnDragOver} onDrop={this.handlerOnDrop}>
+				<div className="Drop-input" onDragOver={handlerOnDragOver} onDrop={handlerOnDrop}>
 					Drop files here!
 				</div>
 				<div className="Div-files">
 					{files}
 				</div>
 				<div className="Div-Button">
-					<button onClick={this.toggleUpload} disabled={!files.length && true}>
-						{!this.state.uploading ? 'Upload File' : 'Cancel'}
+					<button onClick={toggleUpload} disabled={!files.length && true}>
+						{!uploadingState ? 'Upload File' : 'Cancel'}
 					</button>
 				</div>
 			</div>
 		)
 	}
-}
+
+export default DropFileInput;
