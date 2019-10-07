@@ -1,6 +1,6 @@
 var io = require('socket.io-client')('http://' + document.domain + ':' + location.port);
 
-io.on('connect', function() {
+io.on('connect', () => {
 	io.emit('connected');
 });
 
