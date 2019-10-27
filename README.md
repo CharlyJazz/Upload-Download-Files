@@ -1,15 +1,44 @@
-# File Input make in React with SocketIO and Flask
 
-### Run:
+#  File Input make in React with SocketIO and Flask
+
+  
+
+###  About:
+Tool for uploading multiple Zips and Files Asynchronously. Make on React.JS with Flask and SocketIO.
+
+ 
+
+###  Installing and Running:
+#
+
+###  1. Server
 
 ``` bash
 $ pipenv install
+
 $ pipenv shell
-$ yarn
-$ yarn start
+
 $ export FLASK_APP=server.py
+
 $ flask run
 ```
 
+###  2. The App
 
-<center><a href="https://imgflip.com/gif/21oe2u"><img width='100%' src="https://i.imgflip.com/21oe2u.gif" title="made at imgflip.com"/></a></center>
+``` bash
+$ yarn or npm install
+
+$ yarn or npm start
+```
+
+
+#
+
+   
+<center><a href="#"><img width='100%'  src="https://media.giphy.com/media/Tgm2WhqRjzDZiLgbuG/giphy.gif"  title="Giphy"/></a></center>
+
+  
+
+#
+
+<center><a href="#"><img width='100%'  src="https://media.giphy.com/media/LS3xjpQYgEJaooZA97/giphy.gif"  title="Giphy"/></a></center>
