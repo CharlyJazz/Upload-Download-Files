@@ -1,77 +1,82 @@
-import React, { Component } from 'react';
-import File from './File';
+import React from "react";
+import File from "./File";
 
-export default class DropFileInput extends Component {
-	constructor(props) {
-		super(props);
-		
-		this.state = {
-			chunk_size: 64 * 1024,
-			files: [],
-			uploading: false
-		}
-	}
-	
-	handlerOnDragOver = event => {
-		event.preventDefault();
-	};
-	
-	handlerOnDrop = event => {
-		/*
-		* Prevent add repeat files to state
-		* Add Files to State
-		*/
-		event.preventDefault();
-		
-		const array_files = [];
-		
-		for (let i = 0; i < event.dataTransfer.files.length; i++) {
-			let file = event.dataTransfer.files[i];
-				if (!this.state.files.map((n) => n.name).includes(file.name)) {
-					array_files.push(file);
-				}
-		}
-		
-		this.setState({
-			files: [...this.state.files, ...array_files],
-			uploading: false
-		});
-	};
-	
-	toggleUpload = () => {
-		this.setState({uploading: !this.state.uploading})
-	};
-	
-	removeFile = (index) => {
-		this.setState({
-			files: this.state.files.filter((_, i) => i !== index)
-		});
-	};
-	
-	render() {
-		let files = this.state.files.map((file, index) => {
-			return <File file={file}
-									 key={file.name}
-			             chunk_size={this.state.chunk_size}
-			             uploading={this.state.uploading}
-			             clickRemove={this.removeFile.bind(this, index)}
-			/>
-		});
-		
-		return (
-			<div>
-				<div className="Drop-input" onDragOver={this.handlerOnDragOver} onDrop={this.handlerOnDrop}>
-					Drop files here!
-				</div>
-				<div className="Div-files">
-					{files}
-				</div>
-				<div className="Div-Button">
-					<button onClick={this.toggleUpload} disabled={!files.length && true}>
-						{!this.state.uploading ? 'Upload File' : 'Cancel'}
-					</button>
-				</div>
-			</div>
-		)
-	}
-}
+/*
+ Parent component to group all files before upload
+*/
+const DropFileInput = () => {
+  const [stateComponent, setStateComponent] = React.useState({
+    files: [],
+    uploading: false
+  });
+
+  const handlerOnDragOver = event => {
+    event.preventDefault();
+  };
+
+  /*
+   * Add Files to State
+   * Prevent add repeat files to state
+   */
+  const handlerOnDrop = event => {
+    event.preventDefault();
+    const array_files = [];
+    for (let i = 0; i < event.dataTransfer.files.length; i++) {
+      let file = event.dataTransfer.files[i];
+      if (!stateComponent.files.map(n => n.name).includes(file.name)) {
+        array_files.push(file);
+      }
+    }
+    setStateComponent({
+      files: [...stateComponent.files, ...array_files],
+      uploading: false
+    });
+  };
+
+  const toggleUpload = () => {
+    setStateComponent({
+      files: [...stateComponent.files],
+      uploading: !stateComponent.uploading
+    });
+  };
+
+  const removeFile = index => {
+    setStateComponent({
+      files: stateComponent.files.filter((_, i) => i !== index),
+      uploading: stateComponent.uploading
+    });
+  };
+
+  const renderFiles = () => {
+    return stateComponent.files.map((file, index) => {
+      return (
+        <File
+          file={file}
+          key={file.name}
+          uploading={stateComponent.uploading}
+          clickRemove={() => removeFile(index)}
+        />
+      );
+    });
+  };
+
+  return (
+    <div>
+      <div
+        className="Drop-input"
+        onDragOver={handlerOnDragOver}
+        onDrop={handlerOnDrop}
+      >
+        Drop files here!
+      </div>
+      <div className="Div-files">{renderFiles()}</div>
+      <div className="Div-Button">
+        <button onClick={toggleUpload} disabled={!stateComponent.files.length}>
+          {!stateComponent.uploading ? "Upload File" : "Cancel"}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default DropFileInput;

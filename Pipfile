@@ -15,7 +15,7 @@ greenlet = "*"
 flask = "*"
 markupsafe = "*"
 werkzeug = "*"
-"jinja2" = "*"
+jinja2 = "*"
 
 [dev-packages]
 
