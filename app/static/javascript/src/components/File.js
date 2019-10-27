@@ -1,9 +1,7 @@
 import React, { PureComponent } from "react";
 import { Line } from "rc-progress";
 import { readFileChunk, onReadError } from "../actions";
-import io from "../helpers/io";
-
-const CHUNK_SIZE = 64 * 1024;
+import { io } from "../constants";
 
 export default class File extends PureComponent {
   constructor(props) {
@@ -18,7 +16,7 @@ export default class File extends PureComponent {
       }
     };
 
-    this.uploadFile = () => readFileChunk(this, 0, CHUNK_SIZE);
+    this.uploadFile = () => readFileChunk(this, 0);
     this.onReadError = () => onReadError(this, "Upload rejected by server");
   }
 
@@ -43,20 +41,26 @@ export default class File extends PureComponent {
 
   render() {
     return (
-      <div className="File">
-        <span className="File-name">Name: {this.props.file.name}</span>
-        <span className="File-type">
-          Type: {this.props.file.type || "unknown"}
-        </span>
-        <span className="File-type">Size: {this.props.file.size}</span>
-        {!this.state.done && (
-          <button
-            className="File-button-remove"
-            onClick={this.props.clickRemove}
-          >
-            Remove File
-          </button>
-        )}
+      <div>
+        <div className="File">
+          <span className="File-name">Name: {this.props.file.name}</span>
+          <span className="File-type">
+            Type: {this.props.file.type || "unknown"}
+          </span>
+          <span className="File-type">Size: {this.props.file.size}</span>
+          {!this.state.done && (
+            <button
+              className="File-button-remove"
+              onClick={this.props.clickRemove}
+            >
+              Remove File
+            </button>
+          )}
+          <span className='state'>
+            {this.state.done && "Done"}
+            {this.state.invalid && "Invalid"}
+          </span>
+        </div>
         {this.props.uploading && (
           <Line
             percent={this.state.progress.percent}
@@ -66,8 +70,6 @@ export default class File extends PureComponent {
             trailColor="#2fb9e224"
           />
         )}
-        {this.state.done && "Done"}
-        {this.state.invalid && "Invalid"}
       </div>
     );
   }

@@ -16,14 +16,11 @@ html {
 }
 
 .File {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid #37989291;
-  padding: 0.7em 0;
-}
-
-.File-type {
-  margin-left: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0 0.5 0;
+  padding: 0.5rem 0 0 0;
 }
 
 .Div-Button {
@@ -49,4 +46,16 @@ html {
   float: right;
   color: white;
   margin: 0 0 1em 0;
+}
+
+.File > span {
+  padding-bottom: 10px;
+  display: block;
+  flex: 1;
+}
+
+.File > span.state {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
 }

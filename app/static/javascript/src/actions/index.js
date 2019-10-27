@@ -1,11 +1,11 @@
-import io from "../helpers/io";
+import { io, CHUNK_SIZE } from "../constants";
 
-export const readFileChunk = (ctx, offset, length) => {
-  let end_offset = offset + length;
+// Starting uploading reading the file
+export const readFileChunk = (ctx, offset) => {
+  let end_offset = offset + CHUNK_SIZE;
   if (end_offset > ctx.props.file.size) {
-    alert('HOLA')
-    end_offset = ctx.props.file.size
-  };
+    end_offset = ctx.props.file.size;
+  }
   let r = new FileReader();
   r.onload = function(file, offset, length, event) {
     if (event.target.error != null) {
@@ -13,49 +13,45 @@ export const readFileChunk = (ctx, offset, length) => {
     } else {
       onReadSuccess(ctx, offset, length, event.target.result);
     }
-  }.bind(r, ctx.props.file, offset, length);
-  r.readAsArrayBuffer(ctx.props.file.slice(offset, ctx.props.file.size /*end_offset*/));
+  }.bind(r, ctx.props.file, offset, CHUNK_SIZE);
+  r.readAsArrayBuffer(ctx.props.file.slice(offset, end_offset));
 };
 
+// Send chunk
 export const onReadSuccess = (ctx, offset, length, data) => {
-  // Read success callback
   if (ctx.state.done) return;
+  io.emit(
+    "write-chunk",
+    ctx.state.server_filename,
+    offset,
+    data,
+    function(offset, ack) {
+      if (!ack) {
+        onReadError(ctx, "Transfer aborted by server");
+      }
+    }.bind(this, offset)
+  );
 
-  setTimeout(() => {
-    alert('WRITE CHUNK')
-    io.emit(
-      "write-chunk",
-      ctx.state.server_filename,
-      offset,
-      data,
-      function(offset, ack) {
-        if (!ack) {
-          onReadError(ctx, "Transfer aborted by server");
-        }
-      }.bind(this, offset)
-    );
-  }, 1000);
+  const end_offset = offset + length;
+  const porcentage = (end_offset / ctx.props.file.size) * 100;
+  const width = porcentage < 100 ? porcentage : 100;
 
-  let end_offset = offset + length,
-    color = "#48bd9666",
-    width =
-      (end_offset / ctx.props.file.size) * 100 < 100
-        ? (end_offset / ctx.props.file.size) * 100
-        : 100;
-
-  ctx.setState({
-    progress: {
-      ...ctx.state.progress,
-      percent: width,
-      color: color
+  ctx.setState(
+    {
+      progress: {
+        ...ctx.state.progress,
+        percent: width,
+        color: "#48bd9666"
+      }
+    },
+    () => {
+      if (end_offset < ctx.props.file.size) {
+        readFileChunk(ctx, end_offset, CHUNK_SIZE);
+      } else {
+        ctx.setState({ done: true });
+      }
     }
-  });
-
-  if (end_offset < ctx.props.file.size) {
-    readFileChunk(ctx, end_offset, ctx.props.chunk_size);
-  } else {
-    ctx.setState({ done: true });
-  }
+  );
 };
 
 export const onReadError = (ctx, message) => {
@@ -66,7 +62,6 @@ export const onReadError = (ctx, message) => {
       color: "#ff000073",
       percent: 100
     },
-
     invalid: true
   });
 };
